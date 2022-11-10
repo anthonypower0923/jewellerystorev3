@@ -27,6 +27,10 @@ public class Driver extends Application {
         smartAdd(new JewelleryNode("Anything" ,"anything" , "Helicopter" , "\"http://baeldung.com\"", 3.50));
 //        launch(args);
 
+
+
+        // This comment is only in the UI impl branch
+
         // ll -> DisplayCaseLinkedList
 //        DisplayCaseLinkedList dcll = new DisplayCaseLinkedList();
 //
