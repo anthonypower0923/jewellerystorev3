@@ -4,10 +4,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 public class CustomLinkedList<E> {
+    private static final DecimalFormat df = new DecimalFormat("0.00");
     Node<E> head;
     Node<E> tail;
     int size;
@@ -73,7 +78,7 @@ public class CustomLinkedList<E> {
 
         Node<E> current = head;
         int count = 1;
-        while (count < pos) {
+        while (size < pos) {
             count++;
             current = current.next;
         }
@@ -85,7 +90,7 @@ public class CustomLinkedList<E> {
 
     public void deleteFirst() {
         if (isEmpty()) {
-            throw new RuntimeException("List is Empty");
+            return;
         }
         Node<E> current = head;
         head = head.next;
@@ -111,6 +116,35 @@ public class CustomLinkedList<E> {
         }
         previous.next = null;
         tail = previous;
+        size--;
+    }
+
+    public void deleteAtIndex(int pos) {
+        if (isEmpty()) {
+            return;
+        }
+
+        if (pos == 0) {
+            deleteFirst();
+            return;
+        }
+
+        if (pos > size - 1) {
+            System.out.println("pos > head");
+            deleteLast();
+            return;
+        }
+
+        Node<E> current = head;
+        Node<E> prev = null;
+        int count = 0;
+        while (count < pos) {
+            count++;
+            prev = current;
+            current = current.next;
+        }
+        prev.next = current.next;
+        current.next = null;
         size--;
     }
 
@@ -182,4 +216,17 @@ public class CustomLinkedList<E> {
     public void setSize(int size) {
         this.size = size;
     }
+
+    public double roundDoubleToTwoPlaces(double value){
+        return round(value , 2);
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
 }

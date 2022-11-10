@@ -3,23 +3,23 @@ package com.example.jewellerystorev3;
 import java.util.ArrayList;
 
 public class DisplayTrayLinkedList extends CustomLinkedList<DisplayTrayNode> {
-    private double totalValue;
+    private double averagePrice =0.0;
 
     //check if identifier is unique
 
 
     //calculate value of jewellery items in-tray
-    public void valueOfJewelleryItems() {
+    public double valueOfJewelleryItems() {
+        double totalValue = 0.0;
         Node<DisplayTrayNode> current = head;
-        JewelleryLinkedList jewellery = new JewelleryLinkedList();
+        JewelleryLinkedList jewellery = current.val.getLinkedList();
         while (current != null) {
-            if (jewellery.getTotalValue() > 0) {
-                totalValue = totalValue + jewellery.getTotalValue();
-                totalValue = Math.round(totalValue*100.0)/100.0;
+            if (jewellery.calculateValueOfJewelleryItems() > 0) {
+                totalValue = totalValue + jewellery.calculateValueOfJewelleryItems();
             }
             current = current.next;
         }
-        setTotalValue(totalValue);
+        return jewellery.roundDoubleToTwoPlaces(totalValue);
     }
 
     public boolean identifierExists(String identifier) {
@@ -36,63 +36,82 @@ public class DisplayTrayLinkedList extends CustomLinkedList<DisplayTrayNode> {
         return  false;
     }
 
-
-
-
-    //smart add jewellery items
-    ArrayList<Integer> getTraysByGender(ArrayList<Integer> indexes, String gender) {
-        ArrayList<Integer> possibleTrays = new ArrayList<Integer>();
+    //checks each display tray for jewellery items of common gender
+    public String getMostCommonGender() {
+        String mostCommonGender;
         Node<DisplayTrayNode> current = head;
-        int counter = 0;
-        // loop through everything
+        int maleCounter = 0;
+        int femaleCounter = 0;
+        int unisexCounter = 0;
+        //loop through each display tray
         while (current != null) {
-            // only check nodes with an index in indexes
-            if(indexes.contains(counter)){
-                // check if the current nodes gender.equals the
-                if (current.val.getGender().equals(gender)){
-                    // add as a possible display tray
-                    possibleTrays.add(counter);
+            JewelleryLinkedList jll = current.val.getLinkedList();
+            //get the head of the jewellery linked list
+            Node<JewelleryNode> jewelleryNode = jll.getHead();
+            while ((jewelleryNode != null) && !(jewelleryNode.val.getTargetGender().equals(""))) {
+                mostCommonGender = jewelleryNode.val.getTargetGender();
+                if (mostCommonGender.equals("Male"))
+                    maleCounter++;
+                if (mostCommonGender.equals("Female")) {
+                    femaleCounter++;
                 }
+                if (mostCommonGender.equals("Unisex")) {
+                    unisexCounter++;
+                }
+                //iterate through jewellery linked list
+                jewelleryNode = jewelleryNode.next;
             }
-            counter++;
+            //iterate through display trays
             current = current.next;
         }
-        return possibleTrays;
+        return ((maleCounter > femaleCounter) && (maleCounter > unisexCounter)) ? "Male" : ((femaleCounter > maleCounter) && (femaleCounter > unisexCounter)) ? "Female" : ((unisexCounter > maleCounter) && (unisexCounter > femaleCounter)) ? "Unisex" : "Two or more genders are the most common gender:  Male: " + maleCounter + "," + "  Female: " + femaleCounter + "," + " Unisex: " + unisexCounter;
     }
 
-    ArrayList<Integer> getTraysByPrice(ArrayList<Integer> indexes, double number) {
-        ArrayList<Integer> possibleTrays = new ArrayList<Integer>();
+    //checks each display tray for jewellery items of common type
+    public String getMostCommonJewelleryType() {
+        String mostCommonType;
         Node<DisplayTrayNode> current = head;
-        int counter = 0;
-        // loop through everything
+        int watchCounter = 0;
+        int ringCounter = 0;
+        int necklaceCounter = 0;
+        //loop through each display tray
         while (current != null) {
-            // only check nodes with an index in indexes
-            if(indexes.contains(counter)){
-                // check if the current nodes averagePrice is within 30% of value of tray
-                if (isWithinPercentage(number, 30)){
-                    // add as a possible display tray
-                    possibleTrays.add(counter);
+            JewelleryLinkedList jll = current.val.getLinkedList();
+            //get the head of the jewellery linked list
+            Node<JewelleryNode> jewelleryNode = jll.getHead();
+            while ((jewelleryNode != null) && !(jewelleryNode.val.getType().equals(""))) {
+                mostCommonType = jewelleryNode.val.getType();
+                if (mostCommonType.equals("Watch"))
+                    watchCounter++;
+                if (mostCommonType.equals("Ring")) {
+                    ringCounter++;
                 }
+                if (mostCommonType.equals("Necklace")) {
+                    necklaceCounter++;
+                }
+                jewelleryNode = jewelleryNode.next;
             }
-            counter++;
             current = current.next;
         }
-        return possibleTrays;
+        return ((watchCounter > necklaceCounter) && (watchCounter > ringCounter)) ? "Watch" : ((ringCounter > watchCounter) && (ringCounter > necklaceCounter)) ? "Ring" : ((necklaceCounter > watchCounter) && (necklaceCounter > ringCounter)) ? "Necklace" : "Two or more types are the most common type:  Watches: " + watchCounter + "," + "  Rings: " + ringCounter + "," + " Necklaces: " + necklaceCounter;
     }
 
-    private boolean isWithinPercentage(double number , double range) {
+    public boolean isWithinPercentage(double number , double range) {
         Node<DisplayTrayNode> current = head;
+        JewelleryLinkedList jll = current.val.getLinkedList();
+        //get the head of the jewellery linked list
+        Node<JewelleryNode> jewelleryNode = jll.getHead();
         double percentage = 0;
-        percentage = ((current.val.getAveragePrice() - number) * 100) / number;
+        percentage = ((jewelleryNode.val.getRetailPrice() - number) * 100) / number;
 
         return percentage <= range;
     }
 
-    public double getTotalValue() {
-        return totalValue;
+    public double getAveragePrice() {
+        return averagePrice;
     }
 
-    public void setTotalValue(double totalValue) {
-        this.totalValue = totalValue;
+    public void setAveragePrice(double averagePrice) {
+        this.averagePrice = averagePrice;
     }
 }

@@ -10,19 +10,18 @@ class JewelleryLinkedListTest {
 
     @Test
     void testCalculateValueOfJewelleryItemsInPopulatedList() {
-        JewelleryLinkedList ll = Setup.getPopulatedJewelleryLinkedList();
-        ll.calculateValueOfJewelleryItems();
-        ll.print();
-        System.out.print(ll.getTotalValue());
-        assertTrue(ll.getTotalValue() == 62.70);
+        JewelleryLinkedList ll = new JewelleryLinkedList();
+        ll.addFirst(new JewelleryNode("Watch" ,"watch" , "Male" , "\"http://baeldung.com\"", 20.90));
+        System.out.print(ll.calculateValueOfJewelleryItems());
+        assertTrue(ll.calculateValueOfJewelleryItems() == 20.9);
     }
 
     @Test
     void testCalculateValueOfJewelleryItems() {
-        JewelleryLinkedList ll = new JewelleryLinkedList();
-        ll.calculateValueOfJewelleryItems();
-        System.out.print(ll.getTotalValue());
-        assertTrue(ll.getTotalValue() == 0);
+        JewelleryLinkedList ll = Setup.getPopulatedJewelleryLinkedList();
+        ll.print();
+        System.out.print(ll.calculateValueOfJewelleryItems());
+        assertEquals(ll.calculateValueOfJewelleryItems(), 62.70);
     }
 
     @Test
@@ -54,5 +53,35 @@ class JewelleryLinkedListTest {
 
 
 
+    }
+
+    @Test
+    void getAverageValueOfForJewelleryItemsOfSameValue() {
+        JewelleryLinkedList ll = new JewelleryLinkedList();
+
+        JewelleryNode n1 = new JewelleryNode("Unicorn","watch","male","baeldung.com",20.90);
+
+        JewelleryNode n2 = new JewelleryNode("Watch","watch","male","baeldung.com",20.90);
+
+        ll.addLast(n1);
+        ll.addLast(n2);
+
+        System.out.println(ll.getAverageValueOfJewelleryItems());
+        assertTrue(ll.getAverageValueOfJewelleryItems() == 20.90);
+    }
+
+    @Test
+    void getAverageValueOfForJewelleryItemsOfDifferingValue() {
+        JewelleryLinkedList ll = new JewelleryLinkedList();
+
+        JewelleryNode n1 = new JewelleryNode("Unicorn","watch","male","baeldung.com",56.90);
+
+        JewelleryNode n2 = new JewelleryNode("Watch","watch","male","baeldung.com",39.76);
+
+        ll.addLast(n1);
+        ll.addLast(n2);
+
+        System.out.println(ll.getAverageValueOfJewelleryItems());
+        assertTrue(ll.getAverageValueOfJewelleryItems() == 48.33);
     }
 }

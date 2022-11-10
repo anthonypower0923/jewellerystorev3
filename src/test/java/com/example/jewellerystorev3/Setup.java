@@ -4,9 +4,9 @@ public class Setup {
     // returns a linked list with 3 nodes in it
     public static CustomLinkedList<DisplayCaseNode> getPopulatedList(){
         CustomLinkedList<DisplayCaseNode> populatedList = new CustomLinkedList<>();
-        DisplayCaseNode n0 = new DisplayCaseNode("","Freestanding" , "Lit"); // ID DCN_0
-        DisplayCaseNode n1 = new DisplayCaseNode("","Freestanding" , "Lit"); // ID DCN_1
-        DisplayCaseNode n2 = new DisplayCaseNode("","Freestanding" , "Lit"); // ID DCN_2
+        DisplayCaseNode n0 = new DisplayCaseNode("Freestanding" , "Lit"); // ID DCN_0
+        DisplayCaseNode n1 = new DisplayCaseNode("Freestanding" , "Lit"); // ID DCN_1
+        DisplayCaseNode n2 = new DisplayCaseNode("Freestanding" , "Lit"); // ID DCN_2
 
         populatedList.addLast(n0);
         populatedList.addLast(n1);
@@ -16,9 +16,9 @@ public class Setup {
 
     public static DisplayCaseLinkedList getPopulatedDisplayCaseLinkedList(){
         DisplayCaseLinkedList populatedList = new DisplayCaseLinkedList();
-        DisplayCaseNode n0 = new DisplayCaseNode("","Freestanding" , "Lit"); // ID DCN_0
-        DisplayCaseNode n1 = new DisplayCaseNode("","Freestanding" , "Lit"); // ID DCN_1
-        DisplayCaseNode n2 = new DisplayCaseNode("","Freestanding" , "Lit"); // ID DCN_2
+        DisplayCaseNode n0 = new DisplayCaseNode("Freestanding" , "Lit"); // ID DCN_0
+        DisplayCaseNode n1 = new DisplayCaseNode("Freestanding" , "Lit"); // ID DCN_1
+        DisplayCaseNode n2 = new DisplayCaseNode("Freestanding" , "Lit"); // ID DCN_2
 
         populatedList.addLast(n0);
         populatedList.addLast(n1);
@@ -28,9 +28,9 @@ public class Setup {
 
     public static DisplayTrayLinkedList getPopulatedDisplayTrayLinkedList() {
         DisplayTrayLinkedList populatedList = new DisplayTrayLinkedList();
-        DisplayTrayNode n0 = new DisplayTrayNode("green",3.90,4.0, "Male");
-        DisplayTrayNode n1 = new DisplayTrayNode("green",3.90,4.0, "Male");
-        DisplayTrayNode n2 = new DisplayTrayNode("green",3.90,4.0, "Male");
+        DisplayTrayNode n0 = new DisplayTrayNode("green",3.90,4.0);
+        DisplayTrayNode n1 = new DisplayTrayNode("green",3.90,4.0);
+        DisplayTrayNode n2 = new DisplayTrayNode("green",3.90,4.0);
 
         populatedList.addLast(n0);
         populatedList.addLast(n1);

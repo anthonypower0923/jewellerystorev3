@@ -19,12 +19,12 @@ public class Material {
 
     @Override
     public String toString() {
-        return "Material{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", quality=" + quality +
-                ", quantity=" + quantity +
-                '}';
+        return "Material { " +
+                "name= " + name +
+                ", description= " + description +
+                ", quality= " + quality +
+                ", quantity= " + quantity +
+                " }";
     }
 
     public String getName() {

@@ -25,14 +25,13 @@ public class JewelleryNode {
 
     @Override
     public String toString() {
-        return "JewelleryNodes{" +
-                "itemDescription='" + itemDescription + '\'' +
-                ", type='" + type + '\'' +
-                ", targetGender='" + targetGender + '\'' +
-                ", image=" + image +
-                ", retailPrice=" + retailPrice + '\'' +
-                ",  Material= " + material.toString() + '\'' +
-                '}';
+        return  "\n" +"JewelleryNodes {" + '\'' +
+                "itemDescription= " + itemDescription +
+                ", type= " + type +
+                ", targetGender= " + targetGender +
+                ", image= " + image +
+                ", retailPrice= " + retailPrice + '\n' +
+                material.toString();
     }
 
     public String getItemDescription() {

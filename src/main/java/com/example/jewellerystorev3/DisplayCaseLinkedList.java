@@ -38,8 +38,8 @@ public class DisplayCaseLinkedList extends CustomLinkedList<DisplayCaseNode>{
         Node<DisplayCaseNode> current = head;
         DisplayTrayLinkedList tray = new DisplayTrayLinkedList();
         while (current != null) {
-            if (tray.getTotalValue() > 0) {
-                totalValue = totalValue + tray.getTotalValue();
+            if (tray.valueOfJewelleryItems() > 0) {
+                totalValue = totalValue + tray.valueOfJewelleryItems();
                 totalValue = Math.round(totalValue*100.0)/100.0;
             }
             current = current.next;
@@ -67,20 +67,6 @@ public class DisplayCaseLinkedList extends CustomLinkedList<DisplayCaseNode>{
                 xstream.createObjectOutputStream(new FileWriter("jewellerystore.xml"));
         out.writeObject(linkedList);
         out.close();
-    }
-    //get index of case with same type
-    ArrayList<Integer> getCasesWithType(String type) {
-        ArrayList<Integer> possibleCases = new ArrayList<Integer>();
-        Node<DisplayCaseNode> current = head;
-        int counter = 0;
-        while (current != null) {
-            if (current.val.getJewelleryType().contains(type)) {
-                possibleCases.add(counter-1);
-            }
-            counter++;
-            current = current.next;
-        }
-        return possibleCases;
     }
 
     public double getTotalValue() {

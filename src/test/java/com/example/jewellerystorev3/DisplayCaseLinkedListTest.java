@@ -11,7 +11,7 @@ class DisplayCaseLinkedListTest {
     }
 
     @Test
-    void checkNodeIdExists() {
+    void checkNodeIdExistsForNodesWithIDS() {
         DisplayCaseLinkedList ll = Setup.getPopulatedDisplayCaseLinkedList();
         assertTrue(ll.checkNodeIdExists("DCN_0"));
     }

@@ -8,32 +8,28 @@ public class DisplayTrayNode {
     private String inlayColour;
     private double width;
     private double length;
-    private String gender;
-    private double averagePrice = 0.0;
 
     public DisplayTrayNode() {
 
     }
 
-    public DisplayTrayNode(String inlayColour, double width, double length, String gender) {
+    public DisplayTrayNode(String inlayColour, double width, double length) {
         this.identifier = generateId();
         this.inlayColour = inlayColour;
         this.width = width;
         this.length = length;
-        this.gender = gender;
         this.linkedList = new JewelleryLinkedList();
     }
 
     @Override
     public String toString() {
-        return "DisplayTrayNode{" +
-                "identifier='" + identifier + '\'' +
-                ", inlayColour='" + inlayColour + '\'' +
-                ", width=" + width +
-                ", length=" + length +
-                ", averagePrice" + averagePrice +
-                ", JewelleryLL " + getLLContents() + '\'' +
-                '}';
+        return "\n" + "DisplayTrayNode { " +
+                "identifier= " + identifier +
+                ", inlayColour= " + inlayColour +
+                ", width= " + width +
+                ", length= " + length + "\n" +
+                " JewelleryLL: " + getLLContents() +
+                "}";
     }
 
     public String getLLContents() {
@@ -62,21 +58,6 @@ public class DisplayTrayNode {
             //adds identifier values to string
             identifier = "" + identifierLetter + identifierNumber;
             return identifier;
-    }
-
-    public void calculateAveragePrice() {
-        CustomLinkedList.Node<JewelleryNode> current = linkedList.getHead();
-        double averagePrice = 0;
-        int counter = 0;
-        while (current != null) {
-            if (current.val.getRetailPrice() > 0) {
-                averagePrice = averagePrice + current.val.getRetailPrice();
-                counter++;
-            }
-            current = current.next;
-        }
-        averagePrice = averagePrice/counter;
-        setAveragePrice(averagePrice);
     }
 
     public String getIdentifier() {
@@ -136,15 +117,7 @@ public class DisplayTrayNode {
         return linkedList;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public double getAveragePrice() {
-        return averagePrice;
-    }
-
-    public void setAveragePrice(double averagePrice) {
-        this.averagePrice = averagePrice;
+    public void setLinkedList(JewelleryLinkedList linkedList) {
+        this.linkedList = linkedList;
     }
 }

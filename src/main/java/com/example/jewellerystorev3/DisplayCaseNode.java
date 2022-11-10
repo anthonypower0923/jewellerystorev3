@@ -2,7 +2,6 @@ package com.example.jewellerystorev3;
 
 public class DisplayCaseNode {
     private DisplayTrayLinkedList linkedList = null;
-    private String jewelleryType;
     static int idCounter;
     private String displayId;
     private String type;
@@ -12,8 +11,7 @@ public class DisplayCaseNode {
 
     }
 
-    public DisplayCaseNode(String jewelleryType, String type, String lighting) {
-        this.jewelleryType = jewelleryType;
+    public DisplayCaseNode(String type, String lighting) {
         this.displayId = "DCN_"+ idCounter;
         this.type = type;
         this.lighting = lighting;
@@ -23,13 +21,12 @@ public class DisplayCaseNode {
 
     @Override
     public String toString() {
-        return "DisplayCaseNode{" +
-                "displayId=" + displayId +
-                ", type='" + type + '\'' +
-                ", lighting='" + lighting + '\'' +
-                ", JewelleryType " + jewelleryType + '\'' +
-                ", DisplayTrayLL " + getLLContents() + '\'' +
-                '}';
+        return "\n" + "DisplayCaseNode {"  +
+                "displayId= " + displayId +
+                ", type= " + type  +
+                ", lighting= " + lighting + '\n' +
+                " DisplayTrayLL: " + getLLContents()  +
+                "}";
     }
 
     public String getLLContents() {
@@ -44,14 +41,6 @@ public class DisplayCaseNode {
         }
         //System.out.println(" sb contents =" +  "\n" + sb.toString());
         return sb.toString();
-    }
-
-    public String getJewelleryType() {
-        return jewelleryType;
-    }
-
-    public void setJewelleryType(String jewelleryType) {
-        this.jewelleryType = jewelleryType;
     }
 
     public String getDisplayId() {

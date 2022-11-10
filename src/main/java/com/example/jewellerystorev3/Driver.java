@@ -21,7 +21,10 @@ public class Driver extends Application {
     }
     //Testing
     public static void main(String[] args) {
-        printAllDisplayCases();
+
+//        printAllDisplayCases();
+        smartAdd(new JewelleryNode("Necklace" ,"Necklace" , "Female" , "helicopter", 20.90));
+        smartAdd(new JewelleryNode("Anything" ,"anything" , "Helicopter" , "\"http://baeldung.com\"", 3.50));
 //        launch(args);
 
         // ll -> DisplayCaseLinkedList
@@ -88,12 +91,12 @@ public class Driver extends Application {
 
     public static void printAllDisplayCases() {
         DisplayCaseLinkedList dcll = new DisplayCaseLinkedList();
-        dcll.addFirst(new DisplayCaseNode("","Freestanding" , "lit"));
-        dcll.addFirst(new DisplayCaseNode("","Freestanding" , "lit"));
+        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
+        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
         CustomLinkedList.Node<DisplayCaseNode> head = dcll.getHead();
         DisplayTrayLinkedList dtll = head.val.getLinkedList();
-        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0, "Male"));
-        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0, "Male"));
+        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
+        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
 
         String contents = head.val.getLLContents();
         //System.out.println(" sb contents ::" +  "\n" + contents);
@@ -108,44 +111,62 @@ public class Driver extends Application {
         CustomLinkedList.Node<DisplayTrayNode> Tail = dtll.getTail();
         JewelleryLinkedList tailJll = Tail.val.getLinkedList();
         tailJll.addFirst(new JewelleryNode("Anything" ,"anything" , "Male" , "\"http://baeldung.com\"", 20.90));
-        tailJll.addFirst(new JewelleryNode("Necklace" ,"necklace" , "Female" , "\"http://baeldung.com\"", 20.90));
-
+        tailJll.addFirst(new JewelleryNode("Necklace" ,"Necklace" , "Female" , "\"http://baeldung.com\"", 20.90));
 
         //CustomLinkedList.Node<DisplayCaseNode> current = head;
 //        while (current != null){
-        dcll.print();
+        System.out.println(head.val.toString());
             //current = current.next
     }
 
-    public void smartAdd(JewelleryNode node) {
+    public static void smartAdd(JewelleryNode node) {
         DisplayCaseLinkedList dcll = new DisplayCaseLinkedList();
-        DisplayTrayLinkedList dtll = new DisplayTrayLinkedList();
-        ArrayList<Integer> possibleCases = new ArrayList<Integer>();
-        ArrayList<Integer> possibleTrays = new ArrayList<Integer>();
+        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
+        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
+        CustomLinkedList.Node<DisplayCaseNode> displayNode = dcll.getHead();
+        DisplayTrayLinkedList dtll = displayNode.val.getLinkedList();
+        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
+        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
+        CustomLinkedList.Node<DisplayTrayNode> trayNode = dtll.getHead();
+        JewelleryLinkedList jll = trayNode.val.getLinkedList();
+        jll.addFirst(new JewelleryNode("Anything" ,"anything" , "Male" , "\"http://baeldung.com\"", 20.90));
+        jll.addFirst(new JewelleryNode("Necklace" ,"Necklace" , "Female" , "\"http://baeldung.com\"", 20.90));
+        int pos = 0;
+        while (displayNode != null) {
+            while (trayNode != null) {
+                String gender = dtll.getMostCommonGender();
+                String type = dtll.getMostCommonJewelleryType();
+                double price = jll.getAverageValueOfJewelleryItems();
+                pos++;
+                //check if all three fields are the same
+                if ((gender.equals(node.getTargetGender())) && (type.equals(node.getType())) && (price == node.getRetailPrice()) && (dtll.isWithinPercentage(price , 30))) {
+                    jll.addToIndex(pos , node);
+                    System.out.println(displayNode.val.toString());
+                    return;
+                }
+                //checks if gender and type are the same
+                if ((gender.equals(node.getTargetGender())) && (type.equals(node.getType())) && (price != node.getRetailPrice()) && (dtll.isWithinPercentage(price , 30))) {
+                    jll.addToIndex(pos , node);
+                    System.out.println(displayNode.val.toString());
+                    return;
+                }
+                //check if type and price are the same
+                if (!(gender.equals(node.getTargetGender())) || (type.equals(node.getType()))) {
+                    jll.addToIndex(pos , node);
+                    System.out.println(displayNode.val.toString());
+                    return;
+                }
+                //adds to first node if none of conditions are met
+                if (!(gender.equals(node.getTargetGender())) && !(type.equals(node.getType()))) {
+                    jll.addFirst(node);
+                    System.out.println(displayNode.val.toString());
+                    return;
+                }
+                trayNode = trayNode.next;
+            }
+            displayNode = displayNode.next;
+        }
 
-        //check item type
-        if (dcll.getCasesWithType(node.getType()) != null) {
-            //If display case exists of that type add to that case
-            possibleCases = dcll.getCasesWithType(node.getType());
-        } else {
-            //If display case doesn't exist create new display case of that type
-            DisplayCaseNode newNode = new DisplayCaseNode(node.getType(), "freestanding" ,"lit");
-            dcll.addLast(newNode);
-            dtll = newNode.getLinkedList();
-        }
-        //check gender
-        if (dtll.getTraysByGender(possibleCases,node.getTargetGender()) != null) {
-            possibleTrays = dtll.getTraysByGender(possibleCases , node.getTargetGender());
-        }
-        //check average price
-        if (dtll.getTraysByPrice(possibleTrays,node.getRetailPrice()) != null) {
-            //If tray of that average price exists add item to tray
-            possibleTrays = dtll.getTraysByPrice(possibleTrays,node.getRetailPrice());
-        } else {
-            //If tray of that average price does not exist create new display tray of gender/average price
-//            DisplayTrayNode newTray = new DisplayTrayNode(node.getTargetGender(), node.get);
-//            dtll.addLast(newTray);
-        }
     }
 
     //save method
