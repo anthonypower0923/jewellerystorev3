@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="633.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.jewellerystorev3.JewelleryItemController">
+   <children>
+      <ListView fx:id="apt" layoutX="14.0" layoutY="170.0" prefHeight="187.0" prefWidth="614.0" />
+      <Label layoutX="28.0" layoutY="14.0" text="ItemDescription" />
+      <TextField fx:id="itemDescription" layoutX="14.0" layoutY="31.0" prefHeight="26.0" prefWidth="109.0" />
+      <Label layoutX="175.0" layoutY="14.0" text="Type" />
+      <ChoiceBox fx:id="type" layoutX="131.0" layoutY="31.0" prefHeight="26.0" prefWidth="115.0" />
+      <Label layoutX="261.0" layoutY="14.0" text="Target Gender">
+         <padding>
+            <Insets right="15.0" />
+         </padding>
+      </Label>
+      <ChoiceBox fx:id="targetGender" layoutX="259.0" layoutY="31.0" prefHeight="26.0" prefWidth="95.0" />
+      <Label layoutX="413.0" layoutY="14.0" prefHeight="17.0" prefWidth="41.0" text="URL" />
+      <TextField fx:id="url" layoutX="370.0" layoutY="31.0" prefHeight="26.0" prefWidth="109.0" />
+      <Label layoutX="71.0" layoutY="64.0" prefHeight="17.0" prefWidth="66.0" text="Material" />
+      <ChoiceBox fx:id="name" layoutX="18.0" layoutY="88.0" prefWidth="150.0" />
+      <Label layoutX="199.0" layoutY="64.0" text="Material Description" />
+      <TextField fx:id="description" layoutX="174.0" layoutY="89.0" />
+      <Label layoutX="370.0" layoutY="64.0" text="Quantity" />
+      <ChoiceBox fx:id="quantity" layoutX="339.0" layoutY="89.0" prefHeight="26.0" prefWidth="139.0" />
+      <Label layoutX="542.0" layoutY="64.0" text="Quality" />
+      <ChoiceBox fx:id="quality" layoutX="492.0" layoutY="89.0" prefHeight="26.0" prefWidth="127.0" />
+      <Button layoutX="18.0" layoutY="135.0" mnemonicParsing="false" onAction="#addJewelleryItem" prefHeight="26.0" prefWidth="150.0" text="Add Jewellery Item" />
+      <Button layoutX="242.0" layoutY="135.0" mnemonicParsing="false" onAction="#deleteJewelleryItem" prefHeight="26.0" prefWidth="150.0" text="Delete Jewellery Item" />
+      <Button layoutX="467.0" layoutY="135.0" mnemonicParsing="false" onAction="#goBackJewellery" prefHeight="26.0" prefWidth="150.0" text="Go Back " />
+      <Label layoutX="525.0" layoutY="14.0" text="Retail Price" />
+      <ChoiceBox fx:id="retailPrice" layoutX="501.0" layoutY="31.0" prefHeight="26.0" prefWidth="109.0" />
+   </children>
+</AnchorPane>

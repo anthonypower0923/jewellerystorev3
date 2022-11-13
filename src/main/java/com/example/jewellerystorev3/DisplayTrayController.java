@@ -16,86 +16,92 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
 
-
-public class JewelleryStoreController implements Serializable {
-    public ChoiceBox<String> type;
-    public ChoiceBox<String> lighting;
+public class DisplayTrayController extends JewelleryStoreController implements Serializable {
+    public ChoiceBox<String> inlayColour;
+    public ChoiceBox<Double> width;
+    public ChoiceBox<Double> depth;
     public ListView<String> apt = new ListView<>();
-    File saveFile = new File("displaycases");
+    File saveFile = new File("displaytrays");
     public CheckBox orientcheck;
-    DisplayCaseLinkedList dcll = new DisplayCaseLinkedList();
+    DisplayTrayLinkedList dtll = selectDisplayCase();
 
     private Stage stage;
     private Scene scene;
 
-    public void goBackCases(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
+    public void switchToJewellery(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("jewelleryitems.fxml")));
         stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void switchToSecondScene(ActionEvent actionEvent) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("displaytrays.fxml")));
+    public void goBackTrays(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("jewellerystorev2.fxml")));
         stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
 
-    public void addDisplayCase(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
+    public void addDisplayTray(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
         if (apt.getItems().isEmpty()) {
+           loadTrayFile();
         }
-        DisplayCaseNode node = new DisplayCaseNode(type.getValue(), lighting.getValue());
-        dcll.addFirst(node);
-        apt.getItems().add("DCN_" + dcll.size  + "  " + type.getValue() + "  and  " + lighting.getValue() + "  " + " DisplayCase  ");
-        dcll.print();
+        apt.getItems().add(inlayColour.getValue() + "      " + width.getValue() + " x " + depth.getValue() + "cm" + "  DisplayTray  ");
+        dtll.addFirst(new DisplayTrayNode(inlayColour.getValue() , width.getValue() , depth.getValue()));
+        dtll.print();
 //        jewelleryStore.addFirst(new DisplayCaseNode(type.getValue() , lighting.getValue()));
     }
 
-    public void deleteDisplayCase(ActionEvent actionEvent) {
+    public void deleteDisplayTray(ActionEvent actionEvent) {
         if (apt.getSelectionModel().getSelectedIndex() >= 0) {
             apt.getItems().remove(apt.getSelectionModel().getSelectedIndex());
-            dcll.deleteAtIndex(apt.getSelectionModel().getSelectedIndex());
+            dtll.deleteAtIndex(apt.getSelectionModel().getSelectedIndex());
         }
     }
 
-    public DisplayTrayLinkedList selectDisplayCase() {
-        DisplayTrayLinkedList dtll = new DisplayTrayLinkedList();
+    public JewelleryLinkedList selectDisplayTray() {
+        JewelleryLinkedList jll = new JewelleryLinkedList();
         if (apt.getSelectionModel().getSelectedIndex() >= 0) {
             apt.getSelectionModel().getSelectedIndex();
-            CustomLinkedList.Node<DisplayCaseNode> head = dcll.getNodeAtIndex(apt.getSelectionModel().getSelectedIndex());
-            dcll.print();
-            dtll = head.val.getLinkedList();
+            CustomLinkedList.Node<DisplayTrayNode> head = dtll.getNodeAtIndex(apt.getSelectionModel().getSelectedIndex());
+            jll = head.val.getLinkedList();
         }
-        return dtll;
+        return jll;
     }
 
-    public void saveFile(ActionEvent actionEvent) throws IOException {
-        try {
+    public void saveTrayFile(ActionEvent actionEvent) throws IOException {
+        try
+        {
             saveFile.createNewFile();
             Files.write(saveFile.toPath(), apt.getItems().subList(0, apt.getItems().size()));
             saveFile.getAbsolutePath();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             ex.printStackTrace();
         }
-        saveCase("dcll" + apt.getSelectionModel().getSelectedIndex(), dcll);
+        saveTray("dtll", dtll);
     }
 
-    public void loadFile() throws IOException, ClassNotFoundException {
-        if (saveFile.exists()) {
-            try {
+    public void loadTrayFile() throws IOException, ClassNotFoundException {
+        if(saveFile.exists())
+        {
+            try
+            {
                 List<String> linesLoadedFromFile = Files.readAllLines(saveFile.toPath());
                 apt.getItems().addAll(linesLoadedFromFile);
-            } catch (IOException ex) {
+            }
+            catch (IOException ex)
+            {
                 ex.printStackTrace();
             }
         }
-        dcll = readCase("dcll"+ apt.getSelectionModel().getSelectedIndex());
+        dtll = readTray("dtll");
     }
 
-    public void saveCase(String path, DisplayCaseLinkedList list) throws FileNotFoundException, IOException {
+    public void saveTray(String path, DisplayTrayLinkedList list) throws FileNotFoundException, IOException {
         //1. Point to your file using File
         File file = new File(path);
         //2. Then use OOS but to serialize into a file you should use FileOutputStream inside the invocation
@@ -106,23 +112,14 @@ public class JewelleryStoreController implements Serializable {
         objectOutputStream.close();
     }
 
-    /**
-     * This method will read the information of the stock in a file
-     *
-     * @param path Is the file from which you will read the info
-     * @return
-     * @throws IOException
-     * @throws FileNotFoundException
-     * @throws ClassNotFoundException
-     */
-    public DisplayCaseLinkedList readCase(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
-        DisplayCaseLinkedList infoList;
+    public DisplayTrayLinkedList readTray(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
+        DisplayTrayLinkedList infoList;
         //1. Point to your file (the one you want to read)
         File fileToRead = new File(path);
         //2. Use OIS to read the information from a file using FileInputStream
         ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileToRead));
         //3. Just read the object and cast to make sure you obtain the right object
-        infoList = (DisplayCaseLinkedList) objectInputStream.readObject();
+        infoList = (DisplayTrayLinkedList) objectInputStream.readObject();
         //4. Close the stream
         objectInputStream.close();
         return infoList;
@@ -135,8 +132,8 @@ public class JewelleryStoreController implements Serializable {
     }
 
     public void initialize() {
-        type.getItems().addAll("Freestanding", "Wall mounted");
-        lighting.getItems().addAll("Unlit", "Lit");
+        inlayColour.getItems().addAll("Green" ,"Blue","Red","Purple","Yellow","Pink","Black","White");
+        width.getItems().addAll(5.0,10.0,15.0,20.0,25.0,30.0,35.0,40.0);
+        depth.getItems().addAll(0.01,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.00);
     }
 }
-

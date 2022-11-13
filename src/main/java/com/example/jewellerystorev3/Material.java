@@ -1,16 +1,18 @@
 package com.example.jewellerystorev3;
 
-public class Material {
+import java.io.Serializable;
+
+public class Material implements Serializable {
     private String name;
     private String description;
-    private int quality;
-    private int quantity;
+    private Integer quality;
+    private Integer quantity;
 
     public Material() {
 
     }
 
-    public Material(String name, String description, int quality, int quantity) {
+    public Material(String name, String description, Integer quality, Integer quantity) {
         this.name = name;
         this.description = description;
         this.quality = quality;
@@ -43,19 +45,19 @@ public class Material {
         this.description = description;
     }
 
-    public int getQuality() {
+    public Integer getQuality() {
         return quality;
     }
 
-    public void setQuality(int quality) {
+    public void setQuality(Integer quality) {
         this.quality = quality;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 }

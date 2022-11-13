@@ -1,9 +1,6 @@
 package com.example.jewellerystorev3;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -11,13 +8,13 @@ import java.text.DecimalFormat;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-public class CustomLinkedList<E> {
+public class CustomLinkedList<E> implements Serializable {
     private static final DecimalFormat df = new DecimalFormat("0.00");
     Node<E> head;
     Node<E> tail;
     int size;
 
-    static class Node<E> {
+    static class Node<E> implements Serializable {
         E val;
         Node<E> next;
 

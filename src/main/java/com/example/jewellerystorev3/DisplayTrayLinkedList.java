@@ -1,15 +1,16 @@
 package com.example.jewellerystorev3;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DisplayTrayLinkedList extends CustomLinkedList<DisplayTrayNode> {
+public class DisplayTrayLinkedList extends CustomLinkedList<DisplayTrayNode> implements Serializable {
     private double averagePrice =0.0;
 
     //check if identifier is unique
 
 
     //calculate value of jewellery items in-tray
-    public double valueOfJewelleryItems() {
+    public double calculateValueOfJewelleryItems() {
         double totalValue = 0.0;
         Node<DisplayTrayNode> current = head;
         JewelleryLinkedList jewellery = current.val.getLinkedList();

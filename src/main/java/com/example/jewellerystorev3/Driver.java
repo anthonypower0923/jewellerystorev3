@@ -6,25 +6,27 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Driver extends Application {
-    DisplayCaseLinkedList linkedlist = new DisplayCaseLinkedList();
+public class Driver extends Application implements Serializable {
+    static DisplayCaseLinkedList linkedlist = new DisplayCaseLinkedList();
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("jewellerystorev2.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("index.fxml")));
         primaryStage.setTitle("Jewellery Store");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
     //Testing
     public static void main(String[] args) {
+        launch();
 
 //        printAllDisplayCases();
-        smartAdd(new JewelleryNode("Necklace" ,"Necklace" , "Female" , "helicopter", 20.90));
-        smartAdd(new JewelleryNode("Anything" ,"anything" , "Helicopter" , "\"http://baeldung.com\"", 3.50));
+//        smartAdd(new JewelleryNode("Necklace" ,"Necklace" , "Female" , "helicopter", 20.90));
+//        smartAdd(new JewelleryNode("Anything" ,"anything" , "Helicopter" , "\"http://baeldung.com\"", 3.50));
 //        launch(args);
 
 
@@ -173,25 +175,25 @@ public class Driver extends Application {
 
     }
 
-    //save method
-    private void save() {
-        try{
-            linkedlist.save();
-        } catch (Exception e){
-            System.err.println("Error writing to file " + e);
-        }
-
-    }
-
-    //load method
-    private void load() {
-        try {
-            linkedlist.load();
-        } catch (Exception e){
-            System.err.println("Error reading to file " + e);
-        }
-
-    }
+//    //save method
+//    private void save() {
+//        try{
+//            linkedlist.save();
+//        } catch (Exception e){
+//            System.err.println("Error writing to file " + e);
+//        }
+//
+//    }
+//
+//    //load method
+//    private static void load() {
+//        try {
+//            linkedlist.load();
+//        } catch (Exception e){
+//            System.err.println("Error reading to file " + e);
+//        }
+//
+//    }
 
 
 }

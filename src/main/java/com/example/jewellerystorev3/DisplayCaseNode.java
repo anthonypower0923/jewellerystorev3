@@ -1,6 +1,8 @@
 package com.example.jewellerystorev3;
 
-public class DisplayCaseNode {
+import java.io.Serializable;
+
+public class DisplayCaseNode implements Serializable {
     private DisplayTrayLinkedList linkedList = null;
     static int idCounter;
     private String displayId;

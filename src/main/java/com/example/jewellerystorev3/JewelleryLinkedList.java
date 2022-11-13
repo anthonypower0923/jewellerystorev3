@@ -1,10 +1,11 @@
 package com.example.jewellerystorev3;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class JewelleryLinkedList extends CustomLinkedList<JewelleryNode> {
+public class JewelleryLinkedList extends CustomLinkedList<JewelleryNode> implements Serializable {
 
 
     //search jewellery items by description

@@ -1,23 +1,25 @@
 package com.example.jewellerystorev3;
 
-public class DisplayTrayNode {
+import java.io.Serializable;
+
+public class DisplayTrayNode implements Serializable {
     private JewelleryLinkedList linkedList = null;
     static int identifierNumber;
     static char identifierLetter = 65;
     private String identifier;
     private String inlayColour;
     private double width;
-    private double length;
+    private double depth;
 
     public DisplayTrayNode() {
 
     }
 
-    public DisplayTrayNode(String inlayColour, double width, double length) {
+    public DisplayTrayNode(String inlayColour, double width, double depth) {
         this.identifier = generateId();
         this.inlayColour = inlayColour;
         this.width = width;
-        this.length = length;
+        this.depth = depth;
         this.linkedList = new JewelleryLinkedList();
     }
 
@@ -27,7 +29,7 @@ public class DisplayTrayNode {
                 "identifier= " + identifier +
                 ", inlayColour= " + inlayColour +
                 ", width= " + width +
-                ", length= " + length + "\n" +
+                ", depth= " + depth + "\n" +
                 " JewelleryLL: " + getLLContents() +
                 "}";
     }
@@ -105,12 +107,12 @@ public class DisplayTrayNode {
         this.width = width;
     }
 
-    public double getLength() {
-        return length;
+    public double getDepth() {
+        return depth;
     }
 
-    public void setLength(double length) {
-        this.length = length;
+    public void setDepth(double depth) {
+        this.depth = depth;
     }
 
     public JewelleryLinkedList getLinkedList() {

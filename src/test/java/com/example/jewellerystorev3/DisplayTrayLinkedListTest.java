@@ -140,7 +140,7 @@ class DisplayTrayLinkedListTest {
         jll.addFirst(new JewelleryNode("Ring" ,"Necklace" , "Female" , "\"http://baeldung.com\"", 24.67));
         jll.addFirst(new JewelleryNode("Ring" ,"Ring" , "Female" , "\"http://baeldung.com\"", 40.31));
         current.val.setLinkedList(jll);
-        System.out.println(dtll.valueOfJewelleryItems());
-        assertTrue(dtll.valueOfJewelleryItems() == 144.08);
+        System.out.println(dtll.calculateValueOfJewelleryItems());
+        assertTrue(dtll.calculateValueOfJewelleryItems() == 144.08);
     }
 }

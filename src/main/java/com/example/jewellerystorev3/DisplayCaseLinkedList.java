@@ -3,16 +3,12 @@ package com.example.jewellerystorev3;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayCaseLinkedList extends CustomLinkedList<DisplayCaseNode>{
-    private DisplayCaseLinkedList linkedList = null;
-    private double totalValue;
+public class DisplayCaseLinkedList extends CustomLinkedList<DisplayCaseNode> implements Serializable{
+//    private DisplayCaseLinkedList linkedList = new DisplayCaseLinkedList();
 
     public void getAllDisplayIds(){
         Node<DisplayCaseNode> current = head;
@@ -34,47 +30,67 @@ public class DisplayCaseLinkedList extends CustomLinkedList<DisplayCaseNode>{
         return false;
     }
 
-    public void valueOfJewelleryItems() {
+    public double calculateValueOfJewelleryItems() {
+        double totalValue = 0.0;
         Node<DisplayCaseNode> current = head;
-        DisplayTrayLinkedList tray = new DisplayTrayLinkedList();
+        DisplayTrayLinkedList dtll = current.val.getLinkedList();
         while (current != null) {
-            if (tray.valueOfJewelleryItems() > 0) {
-                totalValue = totalValue + tray.valueOfJewelleryItems();
-                totalValue = Math.round(totalValue*100.0)/100.0;
+            if (dtll.calculateValueOfJewelleryItems() > 0) {
+                totalValue = totalValue + dtll.calculateValueOfJewelleryItems();
             }
             current = current.next;
         }
-        setTotalValue(totalValue);
+        return dtll.roundDoubleToTwoPlaces(totalValue);
     }
 
-    public void load() throws Exception {
-        Class<?>[] classes = new Class[]{DisplayTrayNode.class, JewelleryNode.class, DisplayCaseNode.class};
+    public static void smartAdd(JewelleryNode node) {
+        DisplayCaseLinkedList dcll = new DisplayCaseLinkedList();
+        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
+        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
+        CustomLinkedList.Node<DisplayCaseNode> displayNode = dcll.getHead();
+        DisplayTrayLinkedList dtll = displayNode.val.getLinkedList();
+        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
+        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
+        CustomLinkedList.Node<DisplayTrayNode> trayNode = dtll.getHead();
+        JewelleryLinkedList jll = trayNode.val.getLinkedList();
+        jll.addFirst(new JewelleryNode("Anything" ,"anything" , "Male" , "\"http://baeldung.com\"", 20.90));
+        jll.addFirst(new JewelleryNode("Necklace" ,"Necklace" , "Female" , "\"http://baeldung.com\"", 20.90));
+        int pos = 0;
+        while (displayNode != null) {
+            while (trayNode != null) {
+                String gender = dtll.getMostCommonGender();
+                String type = dtll.getMostCommonJewelleryType();
+                double price = jll.getAverageValueOfJewelleryItems();
+                pos++;
+                //check if all three fields are the same
+                if ((gender.equals(node.getTargetGender())) && (type.equals(node.getType())) && (price == node.getRetailPrice()) && (dtll.isWithinPercentage(price , 30))) {
+                    jll.addToIndex(pos , node);
+                    System.out.println(displayNode.val.toString());
+                    return;
+                }
+                //checks if gender and type are the same
+                if ((gender.equals(node.getTargetGender())) && (type.equals(node.getType())) && (price != node.getRetailPrice()) && (dtll.isWithinPercentage(price , 30))) {
+                    jll.addToIndex(pos , node);
+                    System.out.println(displayNode.val.toString());
+                    return;
+                }
+                //check if type and price are the same
+                if (!(gender.equals(node.getTargetGender())) || (type.equals(node.getType()))) {
+                    jll.addToIndex(pos , node);
+                    System.out.println(displayNode.val.toString());
+                    return;
+                }
+                //adds to first node if none of conditions are met
+                if (!(gender.equals(node.getTargetGender())) && !(type.equals(node.getType()))) {
+                    jll.addFirst(node);
+                    System.out.println(displayNode.val.toString());
+                    return;
+                }
+                trayNode = trayNode.next;
+            }
+            displayNode = displayNode.next;
+        }
 
-        XStream xStream = new XStream(new DomDriver());
-//        XStream.setupDefaultSecurity(xStream);
-//        xStream.allowTypes(classes);
-
-        ObjectInputStream is = xStream.createObjectInputStream(new
-                FileReader("cases.xml"));
-        linkedList = (DisplayCaseLinkedList) is.readObject();
-        is.close();
-    }
-
-    //saves the contents of the list into a .xml file
-    public void save() throws Exception {
-        XStream xstream = new XStream(new DomDriver());
-        ObjectOutputStream out =
-                xstream.createObjectOutputStream(new FileWriter("jewellerystore.xml"));
-        out.writeObject(linkedList);
-        out.close();
-    }
-
-    public double getTotalValue() {
-        return totalValue;
-    }
-
-    public void setTotalValue(double totalValue) {
-        this.totalValue = totalValue;
     }
 
 }

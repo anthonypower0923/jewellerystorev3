@@ -1,8 +1,9 @@
 package com.example.jewellerystorev3;
 
+import java.io.Serializable;
 import java.net.URL;
 
-public class JewelleryNode {
+public class JewelleryNode implements Serializable {
     private Material material = null;
     private String itemDescription;
     private String type;
