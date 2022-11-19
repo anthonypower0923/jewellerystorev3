@@ -244,6 +244,7 @@ class CustomLinkedListTest {
         DisplayCaseNode n1 = new DisplayCaseNode("Freestanding" , "Lit");
         dcll.addToIndex(0,n0);
         dcll.addLast(n1);
+        System.out.println(dcll.getSize());
         assertTrue(dcll.getSize() == 2);
         assertTrue(dcll.getNodeAtIndex(0).val.equals(n0));
     }
@@ -269,6 +270,7 @@ class CustomLinkedListTest {
         dcll.addLast(n1);
         dcll.addLast(n2);
         dcll.deleteLast();
+        System.out.println(dcll.getSize());
         assertTrue(dcll.getSize() == 2);
         assertFalse(dcll.getTail().val.equals(n2));
     }

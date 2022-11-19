@@ -13,14 +13,17 @@ public class DisplayTrayLinkedList extends CustomLinkedList<DisplayTrayNode> imp
     public double calculateValueOfJewelleryItems() {
         double totalValue = 0.0;
         Node<DisplayTrayNode> current = head;
-        JewelleryLinkedList jewellery = current.val.getLinkedList();
-        while (current != null) {
-            if (jewellery.calculateValueOfJewelleryItems() > 0) {
-                totalValue = totalValue + jewellery.calculateValueOfJewelleryItems();
+        if (current != null) {
+            JewelleryLinkedList jewellery = current.val.getLinkedList();
+            while (current != null) {
+                if (jewellery.calculateValueOfJewelleryItems() > 0) {
+                    totalValue = totalValue + jewellery.calculateValueOfJewelleryItems();
+                }
+                current = current.next;
             }
-            current = current.next;
+            totalValue = roundDoubleToTwoPlaces(totalValue);
         }
-        return jewellery.roundDoubleToTwoPlaces(totalValue);
+        return totalValue;
     }
 
     public boolean identifierExists(String identifier) {

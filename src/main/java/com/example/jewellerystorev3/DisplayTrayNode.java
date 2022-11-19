@@ -25,13 +25,12 @@ public class DisplayTrayNode implements Serializable {
 
     @Override
     public String toString() {
-        return "\n" + "DisplayTrayNode { " +
+        return "\n" + "DisplayTrayNode  " +
                 "identifier= " + identifier +
                 ", inlayColour= " + inlayColour +
                 ", width= " + width +
-                ", depth= " + depth + "\n" +
-                " JewelleryLL: " + getLLContents() +
-                "}";
+                ", depth= " + depth + "\n";
+//                " JewelleryLL: " + getLLContents() +;
     }
 
     public String getLLContents() {

@@ -26,13 +26,12 @@ public class JewelleryNode implements Serializable {
 
     @Override
     public String toString() {
-        return  "\n" +"JewelleryNodes {" + '\'' +
+        return  "\n" +"JewelleryNode " + '\'' +
                 "itemDescription= " + itemDescription +
                 ", type= " + type +
                 ", targetGender= " + targetGender +
-                ", image= " + image +
-                ", retailPrice= " + retailPrice + '\n' +
-                material.toString();
+                ", image= " + image + ", retailPrice= " + retailPrice + '\n';
+//                + material.toString();
     }
 
     public String getItemDescription() {

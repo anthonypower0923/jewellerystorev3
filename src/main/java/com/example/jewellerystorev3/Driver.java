@@ -174,26 +174,4 @@ public class Driver extends Application implements Serializable {
         }
 
     }
-
-//    //save method
-//    private void save() {
-//        try{
-//            linkedlist.save();
-//        } catch (Exception e){
-//            System.err.println("Error writing to file " + e);
-//        }
-//
-//    }
-//
-//    //load method
-//    private static void load() {
-//        try {
-//            linkedlist.load();
-//        } catch (Exception e){
-//            System.err.println("Error reading to file " + e);
-//        }
-//
-//    }
-
-
 }

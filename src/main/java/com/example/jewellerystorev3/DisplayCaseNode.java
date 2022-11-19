@@ -8,6 +8,7 @@ public class DisplayCaseNode implements Serializable {
     private String displayId;
     private String type;
     private String lighting;
+    private int index;
 
     public DisplayCaseNode() {
 
@@ -23,12 +24,11 @@ public class DisplayCaseNode implements Serializable {
 
     @Override
     public String toString() {
-        return "\n" + "DisplayCaseNode {"  +
+        return "\n" + "DisplayCaseNode "  +
                 "displayId= " + displayId +
                 ", type= " + type  +
-                ", lighting= " + lighting + '\n' +
-                " DisplayTrayLL: " + getLLContents()  +
-                "}";
+                ", lighting= " + lighting + '\n';
+//                " DisplayTrayLL: " + getLLContents()  +;
     }
 
     public String getLLContents() {
