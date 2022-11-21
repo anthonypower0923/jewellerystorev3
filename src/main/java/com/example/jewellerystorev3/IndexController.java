@@ -2,14 +2,12 @@ package com.example.jewellerystorev3;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.*;
-public class IndexController<T> implements Serializable {
+public class IndexController implements Serializable {
 
     //JewelleryItem
     @FXML
@@ -57,24 +55,15 @@ public class IndexController<T> implements Serializable {
     public AnchorPane pane1 = new AnchorPane();
     public AnchorPane pane2 = new AnchorPane();
     public AnchorPane pane3 = new AnchorPane();
-    File saveFile = new File("smartAdd");
 
     TreeItem<String> rootItem = new TreeItem<String>("Jewellery Store");
 
     TreeItem<String> caseContents1 = new TreeItem<String>("Contents");
     TreeItem<String> tray1Contents = new TreeItem<String>("Tray-Contents");
-    TreeItem<String> case1 = new TreeItem<String>("Cases");
 
-
-    public CheckBox orientcheck;
     public DisplayCaseLinkedList dcll = new DisplayCaseLinkedList();
-//    DisplayCaseNode node = new DisplayCaseNode(type1.getValue(), lighting.getValue());
     DisplayTrayLinkedList dtll = new DisplayTrayLinkedList();
-//    DisplayTrayNode trayNode = new DisplayTrayNode(inlayColour.getValue() , width.getValue() , depth.getValue());
     JewelleryLinkedList jll = new JewelleryLinkedList();
-
-    private Stage stage;
-    private Scene scene;
 
     public void addJewelleryItem(ActionEvent actionEvent) {
         JewelleryNode node = new JewelleryNode(itemDescription.getText() , type.getValue() , targetGender.getValue() , url.getText() , retailPrice.getValue());
@@ -332,25 +321,25 @@ public class IndexController<T> implements Serializable {
 
     public DisplayCaseLinkedList readCase(String path) throws FileNotFoundException, IOException, ClassNotFoundException {
         DisplayCaseLinkedList infoList;
-        //1. Point to your file (the one you want to read)
+        //Point to the file
         File fileToRead = new File(path);
-        //2. Use OIS to read the information from a file using FileInputStream
+        //Read the information from a file using FileInputStream
         ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileToRead));
-        //3. Just read the object and cast to make sure you obtain the right object
+        //Read object
         infoList = (DisplayCaseLinkedList) objectInputStream.readObject();
-        //4. Close the stream
+        //Close the stream
         objectInputStream.close();
         return infoList;
     }
 
     public void saveCase(String path, DisplayCaseLinkedList list) throws FileNotFoundException, IOException {
-        //1. Point to your file using File
+        //Point to the file
         File file = new File(path);
-        //2. Then use OOS but to serialize into a file you should use FileOutputStream inside the invocation
+
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file));
-        //3. Just write the object to a file using the method "writeObject"
+        //Write the object to a file
         objectOutputStream.writeObject(list);
-        //4. Close the streams
+        //Close the streams
         objectOutputStream.close();
     }
 

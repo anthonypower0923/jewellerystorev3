@@ -8,7 +8,6 @@ public class DisplayCaseNode implements Serializable {
     private String displayId;
     private String type;
     private String lighting;
-    private int index;
 
     public DisplayCaseNode() {
 
