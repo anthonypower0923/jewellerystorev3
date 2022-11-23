@@ -29,8 +29,8 @@ public class DisplayTrayNode implements Serializable {
                 "identifier= " + identifier +
                 ", inlayColour= " + inlayColour +
                 ", width= " + width +
-                ", depth= " + depth + "\n";
-//                " JewelleryLL: " + getLLContents() +;
+                ", depth= " + depth +
+                " JewelleryLL{ " +  getLLContents() + "}";
     }
 
     public String getLLContents() {

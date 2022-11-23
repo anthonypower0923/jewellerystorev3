@@ -26,8 +26,8 @@ public class DisplayCaseNode implements Serializable {
         return "\n" + "DisplayCaseNode "  +
                 "displayId= " + displayId +
                 ", type= " + type  +
-                ", lighting= " + lighting + '\n';
-//                " DisplayTrayLL: " + getLLContents()  +;
+                ", lighting= " + lighting +
+                " DisplayTrayLL{ " + getLLContents() + "}";
     }
 
     public String getLLContents() {

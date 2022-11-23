@@ -30,8 +30,8 @@ public class JewelleryNode implements Serializable {
                 "itemDescription= " + itemDescription +
                 ", type= " + type +
                 ", targetGender= " + targetGender +
-                ", image= " + image + ", retailPrice= " + retailPrice + '\n';
-//                + material.toString();
+                ", image= " + image + ", retailPrice= " + retailPrice + '\n' +
+                 material.toString();
     }
 
     public String getItemDescription() {

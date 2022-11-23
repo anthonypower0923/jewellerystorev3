@@ -125,53 +125,53 @@ public class Driver extends Application implements Serializable {
             //current = current.next
     }
 
-    public static void smartAdd(JewelleryNode node) {
-        DisplayCaseLinkedList dcll = new DisplayCaseLinkedList();
-        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
-        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
-        CustomLinkedList.Node<DisplayCaseNode> displayNode = dcll.getHead();
-        DisplayTrayLinkedList dtll = displayNode.val.getLinkedList();
-        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
-        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
-        CustomLinkedList.Node<DisplayTrayNode> trayNode = dtll.getHead();
-        JewelleryLinkedList jll = trayNode.val.getLinkedList();
-        jll.addFirst(new JewelleryNode("Anything" ,"anything" , "Male" , "\"http://baeldung.com\"", 20.90));
-        jll.addFirst(new JewelleryNode("Necklace" ,"Necklace" , "Female" , "\"http://baeldung.com\"", 20.90));
-        int pos = 0;
-        while (displayNode != null) {
-            while (trayNode != null) {
-                String gender = dtll.getMostCommonGender();
-                String type = dtll.getMostCommonJewelleryType();
-                double price = jll.getAverageValueOfJewelleryItems();
-                pos++;
-                //check if all three fields are the same
-                if ((gender.equals(node.getTargetGender())) && (type.equals(node.getType())) && (price == node.getRetailPrice()) && (dtll.isWithinPercentage(price , 30))) {
-                    jll.addToIndex(pos , node);
-                    System.out.println(displayNode.val.toString());
-                    return;
-                }
-                //checks if gender and type are the same
-                if ((gender.equals(node.getTargetGender())) && (type.equals(node.getType())) && (price != node.getRetailPrice()) && (dtll.isWithinPercentage(price , 30))) {
-                    jll.addToIndex(pos , node);
-                    System.out.println(displayNode.val.toString());
-                    return;
-                }
-                //check if type and price are the same
-                if (!(gender.equals(node.getTargetGender())) || (type.equals(node.getType()))) {
-                    jll.addToIndex(pos , node);
-                    System.out.println(displayNode.val.toString());
-                    return;
-                }
-                //adds to first node if none of conditions are met
-                if (!(gender.equals(node.getTargetGender())) && !(type.equals(node.getType()))) {
-                    jll.addFirst(node);
-                    System.out.println(displayNode.val.toString());
-                    return;
-                }
-                trayNode = trayNode.next;
-            }
-            displayNode = displayNode.next;
-        }
-
-    }
+//    public static void smartAdd(JewelleryNode node) {
+//        DisplayCaseLinkedList dcll = new DisplayCaseLinkedList();
+//        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
+//        dcll.addFirst(new DisplayCaseNode("Freestanding" , "lit"));
+//        CustomLinkedList.Node<DisplayCaseNode> displayNode = dcll.getHead();
+//        DisplayTrayLinkedList dtll = displayNode.val.getLinkedList();
+//        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
+//        dtll.addFirst(new DisplayTrayNode("green",3.90,4.0));
+//        CustomLinkedList.Node<DisplayTrayNode> trayNode = dtll.getHead();
+//        JewelleryLinkedList jll = trayNode.val.getLinkedList();
+//        jll.addFirst(new JewelleryNode("Anything" ,"anything" , "Male" , "\"http://baeldung.com\"", 20.90));
+//        jll.addFirst(new JewelleryNode("Necklace" ,"Necklace" , "Female" , "\"http://baeldung.com\"", 20.90));
+//        int pos = 0;
+//        while (displayNode != null) {
+//            while (trayNode != null) {
+//                String gender = dtll.getMostCommonGender();
+//                String type = dtll.getMostCommonJewelleryType();
+//                double price = jll.getAverageValueOfJewelleryItems();
+//                pos++;
+//                //check if all three fields are the same
+//                if ((gender.equals(node.getTargetGender())) && (type.equals(node.getType())) && (price == node.getRetailPrice()) && (dtll.isWithinPercentage(price , 30))) {
+//                    jll.addToIndex(pos , node);
+//                    System.out.println(displayNode.val.toString());
+//                    return;
+//                }
+//                //checks if gender and type are the same
+//                if ((gender.equals(node.getTargetGender())) && (type.equals(node.getType())) && (price != node.getRetailPrice()) && (dtll.isWithinPercentage(price , 30))) {
+//                    jll.addToIndex(pos , node);
+//                    System.out.println(displayNode.val.toString());
+//                    return;
+//                }
+//                //check if type and price are the same
+//                if (!(gender.equals(node.getTargetGender())) || (type.equals(node.getType()))) {
+//                    jll.addToIndex(pos , node);
+//                    System.out.println(displayNode.val.toString());
+//                    return;
+//                }
+//                //adds to first node if none of conditions are met
+//                if (!(gender.equals(node.getTargetGender())) && !(type.equals(node.getType()))) {
+//                    jll.addFirst(node);
+//                    System.out.println(displayNode.val.toString());
+//                    return;
+//                }
+//                trayNode = trayNode.next;
+//            }
+//            displayNode = displayNode.next;
+//        }
+//
+//    }
 }

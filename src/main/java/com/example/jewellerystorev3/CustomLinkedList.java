@@ -3,11 +3,9 @@ package com.example.jewellerystorev3;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 
 
 public class CustomLinkedList<E> implements Serializable {
-    private static final DecimalFormat df = new DecimalFormat("0.00");
     Node<E> head;
     Node<E> tail;
     int size;
@@ -95,7 +93,7 @@ public class CustomLinkedList<E> implements Serializable {
 
     public void deleteLast() {
         if (isEmpty()) {
-            throw new RuntimeException("List is Empty");
+            return;
         }
         if (head == tail) {
             head = null;

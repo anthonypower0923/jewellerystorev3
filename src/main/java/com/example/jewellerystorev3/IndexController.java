@@ -9,6 +9,8 @@ import java.io.*;
 import java.util.*;
 public class IndexController implements Serializable {
 
+    static int count = 0;
+
     //JewelleryItem
     @FXML
     TextField itemDescription;
@@ -51,12 +53,14 @@ public class IndexController implements Serializable {
     public ChoiceBox<String> lighting;
 
     public TreeView<String> tree = new TreeView<>();
+    public TreeView<String> allstock = new TreeView<>();
     public AnchorPane rootPane = new AnchorPane();
     public AnchorPane pane1 = new AnchorPane();
     public AnchorPane pane2 = new AnchorPane();
     public AnchorPane pane3 = new AnchorPane();
 
     TreeItem<String> rootItem = new TreeItem<String>("Jewellery Store");
+    TreeItem<String> allstockroot = new TreeItem<String>("Jewellery Store");
 
     TreeItem<String> caseContents1 = new TreeItem<String>("Contents");
     TreeItem<String> tray1Contents = new TreeItem<String>("Tray-Contents");
@@ -71,7 +75,10 @@ public class IndexController implements Serializable {
         node.setMaterial(material);
         jll.addFirst(node);
 
-        TreeItem<String> jew1 = new TreeItem<String>(node.toString());
+        TreeItem<String> jew1 = new TreeItem<String>("itemDescription = " + itemDescription.getText() +
+                ", type = " + type.getValue() +
+                ", targetGender = " + targetGender.getValue() + '\n' +
+                ", image = " + url.getText() + ", retailPrice = " + retailPrice.getValue() + '\n');
         TreeItem<String> drillDown = new TreeItem<>("Drill Down");
         TreeItem<String> material1 = new TreeItem<>(material.toString());
 
@@ -91,12 +98,16 @@ public class IndexController implements Serializable {
 
         pane2.setDisable(false);
         dcll.print();
+        dtll.print();
+        jll.print();
     }
 
     public void addDisplayCase(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
             DisplayCaseNode node = new DisplayCaseNode(type1.getValue(), lighting.getValue());
             dcll.addFirst(node);
-            TreeItem<String> case1 = new TreeItem<String>(node.toString() + "Total value=  €" + dcll.calculateValueOfJewelleryItems());
+            TreeItem<String> case1 = new TreeItem<String>(node.getDisplayId() +
+                    ", type = " + type1.getValue()  +
+                    ", lighting = " + lighting.getValue() + '\n' + "Total value =  €" + dtll.calculateValueOfJewelleryItems());
             dtll = node.getLinkedList();
 
 
@@ -111,6 +122,8 @@ public class IndexController implements Serializable {
         selectedItem.getParent().getChildren().add(index+1, case1);
 
         case1.getChildren().addAll(caseContents1);
+
+        tree.refresh();
 
         pane3.setDisable(false);
         pane2.setDisable(true);
@@ -129,12 +142,18 @@ public class IndexController implements Serializable {
         int index = selectedItem.getParent().getChildren().indexOf(selectedItem);
         DisplayTrayNode tray = new DisplayTrayNode(inlayColour.getValue() , width.getValue() , depth.getValue());
         dtll.addToIndex(index , tray);
-        TreeItem<String> tray1 = new TreeItem<String>(tray.toString() + "Total value=  €" + dtll.calculateValueOfJewelleryItems());
+        TreeItem<String> tray1 = new TreeItem<String>(tray.getIdentifier() +
+                "  inlayColour = " + inlayColour.getValue() +
+                "  width = " + width.getValue() +
+                "  depth = " + depth.getValue() + "\n" + "Total value=  €" + dtll.calculateValueOfJewelleryItems());
         selectedItem.getParent().getChildren().add(index+1, tray1);
 
         tray1.getChildren().addAll(tray1Contents);
 
+        tree.refresh();
+
         dcll.print();
+        dtll.print();
         pane3.setDisable(true);
         itemDescription.setDisable(false);
         type.setDisable(false);
@@ -185,8 +204,9 @@ public class IndexController implements Serializable {
         List<CustomLinkedList.Node<JewelleryNode>> list = jll.searchJewelleryByTerm(term);
         for (int i = 0; i < list.size(); i++) {
             CustomLinkedList.Node<JewelleryNode> node = list.get(i);
-            TreeItem<String> foundItem = new TreeItem<String>("Item that matched your search=" + term + "  " +node.val.toString());
+            TreeItem<String> foundItem = new TreeItem<String>("Item that matched your search = " + term + "  " +node.val.toString());
             TreeItem<String> selectedItem = tree.getSelectionModel().getSelectedItem();
+
             //If there is no selection or root is selected do nothing
             if (selectedItem == null || selectedItem == rootItem)
                 return;
@@ -198,12 +218,37 @@ public class IndexController implements Serializable {
         }
     }
 
+    public void allStock() throws IOException, ClassNotFoundException {
+        dcll = readCase("dcll");
+        CustomLinkedList.Node<DisplayCaseNode> displayNode = dcll.getHead();
+        DisplayTrayLinkedList dtll = displayNode.val.getLinkedList();
+        CustomLinkedList.Node<DisplayTrayNode> trayNode = dtll.getHead();
+        JewelleryLinkedList jll = trayNode.val.getLinkedList();
+        CustomLinkedList.Node<JewelleryNode> jewelleryNode = jll.getHead();
+        Material materials = jewelleryNode.val.getMaterial();
+        TreeItem<String> selectedItem = allstock.getSelectionModel().getSelectedItem();
+        //If there is no selection or root is selected do nothing
+        if (selectedItem == null || selectedItem == rootItem)
+            return;
+
+        //Otherwise, get the index of the Node from the children of its parent
+        //and append the new item right after it
+        int i =0;
+        while (i < dcll.size) {
+            TreeItem<String> allItems = new TreeItem<>(displayNode.val.toString());
+            int index = selectedItem.getParent().getChildren().indexOf(selectedItem);
+            selectedItem.getParent().getChildren().add(index + 1, allItems);
+            i++;
+        }
+        }
+
     public void reload() throws IOException, ClassNotFoundException {
-            loadTree();
+        loadTree();
     }
 
     public void reset() throws IOException {
         initialize();
+        pane2.setDisable(false);
         dcll = new DisplayCaseLinkedList();
         saveCase("dcll" , dcll);
     }
@@ -215,53 +260,60 @@ public class IndexController implements Serializable {
     public void loadTree() throws IOException, ClassNotFoundException {
         dcll = readCase("dcll");
         CustomLinkedList.Node<DisplayCaseNode> displayNode = dcll.getHead();
-        DisplayTrayLinkedList dtll = displayNode.val.getLinkedList();
-        CustomLinkedList.Node<DisplayTrayNode> trayNode = dtll.getHead();
-        JewelleryLinkedList jll = trayNode.val.getLinkedList();
-        CustomLinkedList.Node<JewelleryNode> jewelleryNode = jll.getHead();
-        Material materials = jewelleryNode.val.getMaterial();
-        TreeItem<String> cases = new TreeItem<>();
-        TreeItem<String> trays = new TreeItem<>();
-        TreeItem<String> jewellery = new TreeItem<>();
-        TreeItem<String> material = new TreeItem<>();
-        TreeItem<String> caseContents = new TreeItem<>();
-        TreeItem<String> trayContents = new TreeItem<>();
-        TreeItem<String> selectedItem = tree.getSelectionModel().getSelectedItem();
-        //If there is no selection or root is selected do nothing
-        if (selectedItem == null || selectedItem == rootItem)
-            return;
+        while (displayNode != null) {
+            DisplayTrayLinkedList dtll = displayNode.val.getLinkedList();
+            CustomLinkedList.Node<DisplayTrayNode> trayNode = dtll.getHead();
+            JewelleryLinkedList jll = trayNode.val.getLinkedList();
+            CustomLinkedList.Node<JewelleryNode> jewelleryNode = jll.getHead();
+            Material materials = jewelleryNode.val.getMaterial();
+            TreeItem<String> cases = new TreeItem<>();
+            TreeItem<String> trays = new TreeItem<>();
+            TreeItem<String> jewellery = new TreeItem<>();
+            TreeItem<String> material = new TreeItem<>();
+            TreeItem<String> caseContents = new TreeItem<>();
+            TreeItem<String> trayContents = new TreeItem<>();
+            TreeItem<String> selectedItem = tree.getSelectionModel().getSelectedItem();
+            //If there is no selection or root is selected do nothing
+            if (selectedItem == null || selectedItem == rootItem)
+                return;
 
-        //Otherwise, get the index of the Node from the children of its parent
-        //and append the new item right after it
-        int index = selectedItem.getParent().getChildren().indexOf(selectedItem);
+            //Otherwise, get the index of the Node from the children of its parent
+            //and append the new item right after it
+            int index = selectedItem.getParent().getChildren().indexOf(selectedItem);
 
-                while (displayNode != null) {
-                    cases = new TreeItem<>(displayNode.val.toString()  + "Total value=  €" + dcll.calculateValueOfJewelleryItems());
-                    caseContents = new TreeItem<>("Contents");
-                    selectedItem.getParent().getChildren().add(index+1, cases);
-                    cases.getChildren().addAll(caseContents);
-                    System.out.println(displayNode.val.toString());
-                    displayNode = displayNode.next;
-                }
-                //check if type and price are the same
-                while (trayNode != null) {
-                    trays = new TreeItem<>(trayNode.val.toString()  + "Total value=  €" + dtll.calculateValueOfJewelleryItems());
-                    trayContents = new TreeItem<>("Tray-Contents");
-                    caseContents.getChildren().addAll(trays);
-                    trays.getChildren().addAll(trayContents);
-                    trayNode = trayNode.next;
+            cases = new TreeItem<>(displayNode.val.getDisplayId() + ", type = " + displayNode.val.getType() +
+                    ", lighting = " + displayNode.val.getLighting() + '\n' + "Total value=  €" + dcll.calculateValueOfJewelleryItems());
+            caseContents = new TreeItem<>("Contents");
+            selectedItem.getParent().getChildren().add(index + 1, cases);
+            cases.getChildren().addAll(caseContents);
+            System.out.println(displayNode.val.toString());
+            //check if type and price are the same
+            while (trayNode != null) {
+                trays = new TreeItem<>(trayNode.val.getIdentifier() +
+                        "  inlayColour = " + trayNode.val.getInlayColour() +
+                        "  width = " + trayNode.val.getWidth() +
+                        "  depth = " + trayNode.val.getWidth() + "\n" + "Total value=  €" + dtll.calculateValueOfJewelleryItems());
+                trayContents = new TreeItem<>("Tray-Contents");
+                caseContents.getChildren().addAll(trays);
+                trays.getChildren().addAll(trayContents);
+                trayNode = trayNode.next;
 //                        System.out.println(trayNode.val.toString());
-                }
-                //adds to first node if none of conditions are met
-                while (jewelleryNode != null) {
-                    jewellery = new TreeItem<>(jewelleryNode.val.toString());
-                    material = new TreeItem<>(materials.toString());
-                    TreeItem<String> drillDown = new TreeItem<>("Drill Down");
-                    trayContents.getChildren().addAll(jewellery);
-                    jewellery.getChildren().addAll(drillDown);
-                    drillDown.getChildren().addAll(material);
-                    jewelleryNode = jewelleryNode.next;
-                }
+            }
+            //adds to first node if none of conditions are met
+            while (jewelleryNode != null) {
+                jewellery = new TreeItem<>("itemDescription = " + jewelleryNode.val.getItemDescription() +
+                        ", type = " + jewelleryNode.val.getType() +
+                        ", targetGender = " + jewelleryNode.val.getTargetGender() + '\n' +
+                        "  image = " + jewelleryNode.val.getImage() + " , retailPrice = " + jewelleryNode.val.getRetailPrice() + '\n');
+                material = new TreeItem<>(materials.toString());
+                TreeItem<String> drillDown = new TreeItem<>("Drill Down");
+                trayContents.getChildren().addAll(jewellery);
+                jewellery.getChildren().addAll(drillDown);
+                drillDown.getChildren().addAll(material);
+                jewelleryNode = jewelleryNode.next;
+            }
+            displayNode = displayNode.next;
+        }
     }
 
     public void smartAdd(ActionEvent actionEvent) {
@@ -344,26 +396,33 @@ public class IndexController implements Serializable {
     }
 
     public void initialize() {
-        type.getItems().addAll("Watch" , "Ring" , "Necklace");
-        targetGender.getItems().addAll("Male" , "Female" , "Unisex");
-        retailPrice.getItems().addAll(5.00,10.00,15.00,20.00,25.00,30.00,35.00,40.00,45.00,50.00,55.00,60.00);
-        name.getItems().addAll("Gold","Silver","Platinum","Diamond","Pearl");
-        quantity.getItems().addAll(1,2,3,4,5,6,7,8,9,10);
-        quality.getItems().addAll(1,2,3,4,5);
+        if (count < 1) {
+            type.getItems().addAll("Watch", "Ring", "Necklace");
+            targetGender.getItems().addAll("Male", "Female", "Unisex");
+            retailPrice.getItems().addAll(5.00, 10.00, 15.00, 20.00, 25.00, 30.00, 35.00, 40.00, 45.00, 50.00, 55.00, 60.00);
+            name.getItems().addAll("Gold", "Silver", "Platinum", "Diamond", "Pearl");
+            quantity.getItems().addAll(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+            quality.getItems().addAll(1, 2, 3, 4, 5);
 
-        inlayColour.getItems().addAll("Green" ,"Blue","Red","Purple","Yellow","Pink","Black","White");
-        width.getItems().addAll(5.0,10.0,15.0,20.0,25.0,30.0,35.0,40.0);
-        depth.getItems().addAll(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.00);
+            inlayColour.getItems().addAll("Green", "Blue", "Red", "Purple", "Yellow", "Pink", "Black", "White");
+            width.getItems().addAll(5.0, 10.0, 15.0, 20.0, 25.0, 30.0, 35.0, 40.0);
+            depth.getItems().addAll(0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.00);
 
-        type1.getItems().addAll("Freestanding", "Wall mounted");
-        lighting.getItems().addAll("Unlit", "Lit");
+            type1.getItems().addAll("Freestanding", "Wall mounted");
+            lighting.getItems().addAll("Unlit", "Lit");
+            count++;
+        }
 
         pane3.setDisable(true);
 
         TreeItem<String> rootItem = new TreeItem<String>("Jewellery Store");
+        TreeItem<String> allstockroot = new TreeItem<String>("All Stock");
         TreeItem<String> case1 = new TreeItem<String>("Cases");
+        TreeItem<String> case2 = new TreeItem<String>("Cases");
 
+        pane2.setDisable(false);
         tree.setRoot(rootItem);
+        allstock.setRoot(allstockroot);
         itemDescription.setDisable(true);
         type.setDisable(true);
         targetGender.setDisable(true);
@@ -377,6 +436,7 @@ public class IndexController implements Serializable {
         smartadd.setDisable(true);
 
         rootItem.getChildren().addAll(case1);
+        allstockroot.getChildren().addAll(case2);
 
 
     }
